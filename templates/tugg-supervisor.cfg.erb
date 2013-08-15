@@ -1,0 +1,6 @@
+[program: tugg]
+directory = /opt/tugg/gigs/
+username = <%= @user_name%> 
+command = /opt/tugg/gigs/bin/django run_gunicorn --timeout=300
+stdout_logfile = /var/log/supervisor/logfile.log
+stderr_logfile = /var/log/supervisor/error-logfile.log
