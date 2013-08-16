@@ -16,6 +16,7 @@ define tugg (
     file { "/var/log/tugg/":
         ensure => "directory",
         owner  => $user_name,
+        group  => $user_name,
     }
 
     user { $user_name:
@@ -79,6 +80,7 @@ define tugg (
     exec { "bootstrap":
         command => "python2.7 /opt/tugg/gigs/bootstrap.py -v 1.7.0 -c /opt/tugg/gigs/production.cfg",
         require => [Vcsrepo["/opt/tugg/gigs"]],
+        user=>$user_name,
         #unless => "test -d $path/bin",
         }
 
@@ -87,6 +89,7 @@ define tugg (
         command => "/opt/tugg/gigs/bin/buildout -c /opt/tugg/gigs/production.cfg",
         require => [Exec["bootstrap"]],
         unless => "test -e /opt/tugg/gigs/bin/django",
+        user=>$user_name,
         }
 
     # Collect static media for the TUGG project
@@ -94,7 +97,7 @@ define tugg (
         command => "/opt/tugg/gigs/bin/django collectstatic --noinput",
         require => [Exec["buildout"], Vcsrepo["/opt/tugg/gigs"], User[$user_name]],
         creates => "/opt/tugg/gigs/gigs/static",
-        user => $user_name
+        user => $user_name,
     }
     
     # Setup Supervisor, used to run gunicorn and the main app
