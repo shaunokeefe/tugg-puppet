@@ -48,8 +48,7 @@ define tugg (
         source =>"git://github.com/shaunokeefe/gigs.git",
         revision => 'master',
 	owner => $user_name,
-	before => Exec["bootstrap"],
-	require => User[$user_name],
+	require => [User[$user_name], File["/opt/tugg/"]],
         }
 
     # MySQL server (replace password)
