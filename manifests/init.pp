@@ -95,7 +95,7 @@ define tugg (
     # Collect static media for the TUGG project
     exec{"static-media":
         command => "/opt/tugg/gigs/bin/django collectstatic --noinput",
-        require => [Exec["buildout"], Vcsrepo["/opt/tugg/gigs"], User[$user_name]],
+        require => [Exec["buildout"], Vcsrepo["/opt/tugg/gigs"], User[$user_name], Class["mysql::bindings::python"]],
         creates => "/opt/tugg/gigs/gigs/static",
         user => $user_name,
     }
@@ -154,6 +154,6 @@ define tugg (
 	command => "/opt/tugg/gigs/bin/django rebuild_index",
 	user    => root,
 	hour    => 1,
-	require =>  Exec['buildout'],
+	require =>  [Exec['buildout'],Class["mysql::bindings::python"]],
    }
 }
