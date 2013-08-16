@@ -60,7 +60,7 @@ define tugg (
       }
 
     # Python bindings for mysql
-    class { 'mysql::python': }
+    class { 'mysql::bindings::python': }
 
     # MySQL database for django
     mysql::db { $mysqldb_name:
